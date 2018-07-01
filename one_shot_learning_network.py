@@ -136,9 +136,10 @@ class AttentionalClassify:
         :param training: Flag indicating training or evaluation stage (True/False)
         :return: Softmax pdf
         """
+        attention = tf.softmax(similarities) #cast the cos similarities to probability distribution
         with tf.name_scope('attentional-classification' + name), tf.variable_scope('attentional-classification',
                                                                                    reuse=self.reuse):
-            preds = tf.squeeze(tf.matmul(tf.expand_dims(similarities, 1), support_set_y))
+            preds = tf.squeeze(tf.matmul(tf.expand_dims(attention, 1), support_set_y))
         self.variables = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope='attentional-classification')
         return preds
 
